@@ -1,0 +1,14 @@
+#ogreImage {
+    margin-top: 100px;
+}
+#top {
+    background: 'black';
+    text-color: 'white';
+}
+
+#csvPickerForm {
+    background: lightgray;
+    border: solid;
+    margin: 15px;
+    padding: 10px;
+}

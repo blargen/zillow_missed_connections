@@ -7,34 +7,13 @@ require 'erb'
 require 'csv'
 require 'fileutils'
 
-class ZillowMissedConnections
+class ZillowController
   include HTTParty
   format :xml
 
-  def initialize
+  def initialize(file)
     $CALLS_REACHED     = false
-  end
-
-  def get_file_name
-    error_message('Please enter the name of the file (Ctrl + C to cancel):')
-    print 'File Name: '
-    file_name = gets.chomp
-    file      = "#{File.expand_path("../OriginalFiles", __FILE__)}/#{file_name}"
-    get_file_name unless check_file_existence(file)
-    get_file_name unless check_file_type(file)
-    file
-  end
-
-  def check_file_type(file)
-    return true if File.extname(file) == '.csv'
-    error_message('Files must be of time ".csv"')
-    false
-  end
-
-  def check_file_existence(file)
-    return true if File.exists?(file)
-    error_message('File must be inside of the OriginalFiles Folder')
-    false
+    @original_file = file
   end
 
   def create_result_file
@@ -60,12 +39,15 @@ class ZillowMissedConnections
     end
   end
 
-  def error_message(message)
-    error_length = message.length
-    (error_length + 4).times { print '*' }
-    puts "\n* #{message} *\n"
-    (error_length + 4).times { print '*' }
-    puts "\n\n"
+  def list_expected_headers
+    %w(property_id address city state zip)
+  end
+
+  def missing_headers(file_headers)
+    expected_headers = list_expected_headers
+    actual_headers = file_headers
+    missing_headers = expected_headers - actual_headers
+    missing_headers
   end
 
   def create_address(row)
@@ -134,8 +116,7 @@ class ZillowMissedConnections
     end
   end
 
-  def create_headers(file_path)
-    error_message('Creating Results File.')
+  def create_headers
     file = File.expand_path("../ResultsFiles/#{Date.today.strftime('%Y_%m_%d')}_results.csv", __FILE__)
     headers = %w(property_id address city state zip lot_size house_size result)
     error_message('Results file already exists.')
@@ -156,11 +137,9 @@ class ZillowMissedConnections
   end
 
 
-  def create_romance
-    file          = get_file_name
+  def create_romance(file)
     original_file = open_file(file)
-    check_headers(original_file.headers)
-    backup_file(file)
+
     results_file = create_headers
 
     original_file.each do |row|
@@ -170,7 +149,7 @@ class ZillowMissedConnections
       next if address_info.nil?
       write_to_results_file(results_file, address_info)
     end
-    copy_results_to_original(original_file, results_file)
+
   end
 
 end
