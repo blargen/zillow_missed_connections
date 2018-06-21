@@ -11,11 +11,11 @@ class App < Sinatra::Base
   end
 
   post '/romance' do
-    file = params[:input_file][:tempfile]
+    file = params[:input_file][:tempfile].path
     zillow = ZillowController.new
+    csv = zillow.open_file(file)
     @expected_headers = zillow.list_expected_headers
-    @missing_headers = zillow.missing_headers(['address', 'city', 'state', 'zip'])
-    erb :romance
-
+    @missing_headers = zillow.missing_headers(csv.headers)
+    erb :compatibility
   end
 end

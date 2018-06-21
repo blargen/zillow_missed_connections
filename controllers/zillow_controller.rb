@@ -11,9 +11,9 @@ class ZillowController
   include HTTParty
   format :xml
 
-  def initialize(file)
+  def initialize
     $CALLS_REACHED     = false
-    @original_file = file
+    # @original_file = file
   end
 
   def create_result_file
