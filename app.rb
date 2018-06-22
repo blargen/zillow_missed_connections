@@ -1,5 +1,6 @@
 require 'sinatra'
 require_relative 'controllers/zillow_controller'
+require_relative 'controllers/compatibility_checker'
 
 class App < Sinatra::Base
   configure :development do
@@ -12,10 +13,11 @@ class App < Sinatra::Base
 
   post '/romance' do
     file = params[:input_file][:tempfile].path
-    zillow = ZillowController.new
-    csv = zillow.open_file(file)
-    @expected_headers = zillow.list_expected_headers
-    @missing_headers = zillow.missing_headers(csv.headers)
+    comp = CompatibilityChecker.new
+    csv = comp.open_file(file)
+    @expected_headers = %w[property_id address city state zip]
+    @missing_headers = comp.missing_headers(csv.headers)
+    @zip_formatted_correctly = comp.check_zip_code(file)
     erb :compatibility
   end
 end

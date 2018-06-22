@@ -1,16 +1,24 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-5 left">
-      <ul class="list-group">
-        <li class="list-group-item list-group-item-warning">Expected Headers</li>
-        <% @expected_headers.each do |header| %>
-          <li class="list-group-item list-group-item-dark"><%= header %></li>
+    <div class="card col-sm-6 left">
+      <div class="card-body">
+        <h5 class="card-title">How Does This Bode For My Zip Code?</h5>
+        <h6 class="card-subtitle mb-2 text-muted">All zip codes should be 5 digits</h6>
+        <% if @zip_formatted_correctly %>
+          <p class="card-text">Ogre Says, "Yo Bruv, it looks like you be looking for love in all the right places! Dem
+            zip codes are off
+            the chain!"</p>
+        <% else %>
+          <p class="card-text">Ogre says, "Yo Bruv, your zips be straight busted! You gots to make dem look nice wif dem
+            5 digis!"</p>
         <% end %>
-      </ul>
+        <a href="#" class="card-link">Let's Try this again</a>
+      </div>
     </div>
+
     <div class="col-sm-5 right">
       <ul class="list-group">
-        <li class="list-group-item list-group-item-info">Missing Headers</li>
+        <li class="list-group-item list-group-item-info">Headers</li>
         <% @expected_headers.each do |header| %>
           <% if @missing_headers.include?(header) %>
             <li class="list-group-item list-group-item-danger"><%= header %></li>
@@ -21,4 +29,12 @@
       </ul>
     </div>
   </div>
+</div>
+
+<div class="container">
+  <% if @zip_formatted_correctly && @missing_headers == [] %>
+    <img src="compat.jpg" class="rounded d-block" alt="...">
+  <% else %>
+    <img src="first.jpg" class="rounded d-block" alt="...">
+  <% end %>
 </div>

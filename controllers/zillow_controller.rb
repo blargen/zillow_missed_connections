@@ -27,29 +27,6 @@ class ZillowController
     csv
   end
 
-  def check_headers(file_headers)
-    expected_headers = %w(property_id address city state zip)
-    puts 'Checking headers to make sure that they include the following: '
-    expected_headers.each { |header| puts header }
-    expected_headers.each do |header|
-      unless file_headers.include?(header)
-        error_message("Header not found: #{header}. Please format the file correctly and try again")
-        exit
-      end
-    end
-  end
-
-  def list_expected_headers
-    %w(property_id address city state zip)
-  end
-
-  def missing_headers(file_headers)
-    expected_headers = list_expected_headers
-    actual_headers = file_headers
-    missing_headers = expected_headers - actual_headers
-    missing_headers
-  end
-
   def create_address(row)
     zip     = row['zip'] ||= ''
     address = {
@@ -101,7 +78,6 @@ class ZillowController
   end
 
   def write_to_results_file(results_file, address_info)
-
     CSV.open(results_file, 'a') do |csv|
       csv << [
         address_info[:property_id],
