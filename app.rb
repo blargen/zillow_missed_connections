@@ -18,15 +18,15 @@ class App < Sinatra::Base
     @expected_headers = %w[property_id address city state zip]
     @missing_headers = comp.missing_headers(csv.headers)
     @zip_formatted_correctly = comp.check_zip_code(@file)
+    @zillow_page_redirect = "/down_to_zillow?#{@file}"
     erb :compatibility
   end
 
-  post 'make_romance' do
+  post '/down_to_zillow' do
+    @file_string = params[:zillowfile]
+    puts "File: #{@file_string}"
     zillow = ZillowController.new
-    zillow.create_romance(@file)
-  end
-
-  get '/down_to_zillow' do
+    zillow.create_romance(@file_string)
     erb :down_to_zillow
   end
 end
