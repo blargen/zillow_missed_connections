@@ -1,29 +1,29 @@
 <div class="container">
-  <div class="row">
-    <div class="card bg-light col-sm-12">
-      <% if @zip_formatted_correctly && @missing_headers == [] %>
-        <img src="compat.jpg" class="rounded d-block" alt="...">
-      <% else %>
-        <img src="first.jpg" class="rounded d-block" alt="...">
-      <% end %>
-      <div class="card-deck">
-        <div class="card col-sm-4 left">
-          <div class="card-body">
-            <h5 class="card-title">How Does This Bode For My Zip Code?</h5>
-            <h6 class="card-subtitle mb-2 text-muted">All zip codes should be 5 digits</h6>
-            <% if @zip_formatted_correctly %>
-              <p class="card-text">Ogre Says, "Yo Bruv, it looks like you be looking for love in all the right places!
-                Dem
-                zip codes are off
-                the chain!"</p>
-            <% else %>
-              <p class="card-text">Ogre says, "Yo Bruv, your zips be straight busted! You gots to make dem look nice wif
-                dem 5 digis!"</p>
-            <% end %>
-          </div>
+  <div class="card bg-light col-sm-12 border-dark mb-5">
+    <% if @zip_formatted_correctly && @missing_headers == [] %>
+      <img style="margin-bottom: 25px;" src="compat.jpg" class="rounded d-block" alt="...">
+    <% else %>
+      <img style="margin-bottom: 25px;" src="first.jpg" class="rounded d-block" alt="...">
+    <% end %>
+    <div class="card-deck">
+      <div class="card border-dark mb-3 text-center">
+        <h5 class="card-header">Zip Codes</h5>
+        <div class="card-body">
+          <h6 class="card-subtitle">How does this bode for my zip code?</h6>
+          <% if @zip_formatted_correctly %>
+            <p class="card-text">Ogre Says, "Yo Bruv, it looks like you be looking for love in all the right places!
+              Dem
+              zip codes are off
+              the chain!"</p>
+          <% else %>
+            <p class="card-text">Ogre says, "Yo Bruv, your zips be straight busted! You gots to make dem look nice wif
+              dem 5 digis!"</p>
+          <% end %>
         </div>
-        <div class="col-sm-4 card">
-          <h5 class="card-title">Required Headers</h5>
+      </div>
+      <div class="card border-dark mb-3 text-center">
+        <h5 class="card-header">Required Headers</h5>
+        <div class="card-body">
           <ul class="list-group">
             <% @expected_headers.each do |header| %>
               <% if @missing_headers.include?(header) %>
@@ -34,24 +34,26 @@
             <% end %>
           </ul>
         </div>
-        <div class="col-sm-4 card text-center right">
-          <div class="card-body">
-            <% if @zip_formatted_correctly && @missing_headers == [] %>
-              <h5 class="card-title">I think we have a romantic connection!</h5>
-              <p class="card-text">In your case, CSV stands for Created Sexy Values!
-                Let's see if we can't set up a date with your file and Zillow!
-              </p>
-              <button class="btn btn-success">Create Romance</button>
-            <% else %>
-              <h5 class="card-title">It looks like maybe we got off on the wrong foot.</h5>
-              <p class="card-text">Not every single date leads to a connection!
-                Let's give it another shot! There's a right csv for everybody!</p>
-              <a class="btn btn-danger" href="/" role="button">Let's try this again</a>
-            <% end %>
-          </div>
+      </div>
+      <div class="card border-dark mb-3 text-center">
+        <h5 class="card-header">Love Connection Status</h5>
+        <div class="card-body">
+          <% if @zip_formatted_correctly && @missing_headers == [] %>
+            <h5 class="card-title">I think we have a romantic connection!</h5>
+            <p class="card-text">In your case, CSV stands for Created Sexy Values!
+              Let's see if we can't set up a date with your file and Zillow!
+            </p>
+            <form action="/create_romance" method="POST">
+              <input name="" class="btn btn-success" type="submit" value="Create Romance">
+            </form>
+          <% else %>
+            <h5 class="card-title">It looks like maybe we got off on the wrong foot.</h5>
+            <p class="card-text">Not every single date leads to a connection!
+              Let's give it another shot! There's a right csv for everybody!</p>
+            <a class="btn btn-danger" href="/" role="button">Let's try this again</a>
+          <% end %>
         </div>
       </div>
     </div>
   </div>
-
 </div>

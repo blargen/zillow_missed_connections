@@ -11,13 +11,22 @@ class App < Sinatra::Base
     erb :index
   end
 
-  post '/romance' do
-    file = params[:input_file][:tempfile].path
+  post '/compatibility' do
+    @file = params[:input_file][:tempfile].path
     comp = CompatibilityChecker.new
-    csv = comp.open_file(file)
+    csv = comp.open_file(@file)
     @expected_headers = %w[property_id address city state zip]
     @missing_headers = comp.missing_headers(csv.headers)
-    @zip_formatted_correctly = comp.check_zip_code(file)
+    @zip_formatted_correctly = comp.check_zip_code(@file)
     erb :compatibility
+  end
+
+  post 'make_romance' do
+    zillow = ZillowController.new
+    zillow.create_romance(@file)
+  end
+
+  get '/down_to_zillow' do
+    erb :down_to_zillow
   end
 end
