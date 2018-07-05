@@ -25,9 +25,10 @@ class App < Sinatra::Base
   end
 
   get '/down_to_zillow' do
+    erb :down_to_zillow
     file = File.expand_path('../public/files/source/source_file.csv', __FILE__)
     zillow = ZillowController.new
-    zillow.create_romance(file)
-    erb :down_to_zillow
+    results_file = zillow.create_romance(file)
+    send_file(results_file)
   end
 end

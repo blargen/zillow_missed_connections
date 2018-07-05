@@ -68,7 +68,6 @@ class ZillowController
     else
       address_info[:result] = Nokogiri(search_results).xpath("//message").first.text
     end
-    puts "Address: #{address_info}"
     address_info
   end
 
@@ -102,7 +101,7 @@ class ZillowController
       next if address_info.nil?
       write_to_results_file(address_info)
     end
-
+    @results_file
   end
 
 end
