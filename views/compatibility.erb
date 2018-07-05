@@ -8,10 +8,11 @@
       <% end %>
       <div class="card-deck">
         <div class="card border-dark mb-3 text-center">
-          <h5 class="card-header">Zip Codes</h5>
+
           <div class="card-body">
-            <h6 class="card-subtitle">How does this bode for my zip code?\n</h6>
+            <h6 class="card-subtitle">How does this bode for my zip code?</h6>
             <% if @zip_formatted_correctly %>
+              <h5 class="card-header">Zip Codes</h5>
               <p class="card-text">Ogre Says, "Yo Bruv, it looks like you be looking for love in all the right places!
                 Dem
                 zip codes are off
@@ -44,10 +45,7 @@
               <p class="card-text">In your case, CSV stands for Created Sexy Values!
                 Let's see if we can't set up a date with your file and Zillow!
               </p>
-              <form action="/down_to_zillow" method="POST">
-                <input name="zillow" class="btn btn-success" type="submit" value="Create Romance">
-                <input type="hidden" name="zillowfile" value=<%= @file %> >
-              </form>
+               <a class="btn btn-success" href="/down_to_zillow" role="button">Ooo La La</a>
             <% else %>
               <h5 class="card-title">It looks like maybe we got off on the wrong foot.</h5>
               <p class="card-text">Not every single date leads to a connection!

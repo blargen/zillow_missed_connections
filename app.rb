@@ -12,21 +12,22 @@ class App < Sinatra::Base
   end
 
   post '/compatibility' do
-    @file = params[:input_file][:tempfile].path
+    @file_path = params[:input_file][:tempfile].path
+    @file_name = params[:input_file][:filename]
+    @local_file_path = File.expand_path('public/files/source/source_file.csv', __dir__)
+    FileUtils.copy(@file_path, @local_file_path)
     comp = CompatibilityChecker.new
-    csv = comp.open_file(@file)
+    csv = comp.open_file(@local_file_path)
     @expected_headers = %w[property_id address city state zip]
     @missing_headers = comp.missing_headers(csv.headers)
-    @zip_formatted_correctly = comp.check_zip_code(@file)
-    @zillow_page_redirect = "/down_to_zillow?#{@file}"
+    @zip_formatted_correctly = comp.check_zip_code(@local_file_path)
     erb :compatibility
   end
 
-  post '/down_to_zillow' do
-    @file_string = params[:zillowfile]
-    puts "File: #{@file_string}"
+  get '/down_to_zillow' do
+    file = File.expand_path('../public/files/source/source_file.csv', __FILE__)
     zillow = ZillowController.new
-    zillow.create_romance(@file_string)
+    zillow.create_romance(file)
     erb :down_to_zillow
   end
 end

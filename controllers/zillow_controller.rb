@@ -13,12 +13,8 @@ class ZillowController
 
   def initialize
     @calls_reached = false
-  end
-
-  def create_result_file
-    file = File.expand_path("../public/results/Results_#{Date.today.strftime('%Y_%m_%d')}")
-    headers = %w(client_property_id address city state zip lot_size house_size result)
-    CSV.open(file, 'w+') { |csv| csv << headers }
+    @results_file = File.expand_path("../../public/files/results/#{Date.today.strftime('%Y_%m_%d')}_results.csv", __FILE__)
+    puts "HELLO: #{File.exist?(@results_file)}"
   end
 
   def open_file(file)
@@ -55,6 +51,7 @@ class ZillowController
       response = self.class.get('http://www.zillow.com/webservice/GetDeepSearchResults.htm', query: options).body
       parsed_info = parse_response(response)
       the_whole_package = options.merge(parsed_info) unless options.nil? || parsed_info.nil?
+      puts the_whole_package
       return the_whole_package
     else
       return options
@@ -73,11 +70,12 @@ class ZillowController
     else
       address_info[:result] = Nokogiri(search_results).xpath("//message").first.text
     end
+    puts address_info
     address_info
   end
 
-  def write_to_results_file(results_file, address_info)
-    CSV.open(results_file, 'a') do |csv|
+  def write_to_results_file(address_info)
+    CSV.open(@results_file, 'a') do |csv|
       csv << [
         address_info[:property_id],
         address_info[:address],
@@ -92,23 +90,20 @@ class ZillowController
   end
 
   def create_headers
-    file = File.expand_path("../ResultsFiles/#{Date.today.strftime('%Y_%m_%d')}_results.csv", __FILE__)
     headers = %w(property_id address city state zip lot_size house_size result)
-    error_message('Results file already exists.')
-    CSV.open(file, 'w+') {|csv| csv << headers}
-    file
+    CSV.open(@results_file, 'w+') { |csv| csv << headers }
   end
 
 
   def create_romance(file)
     original_file = open_file(file)
-    results_file = create_headers
+    create_headers
     original_file.each do |row|
       next if row[:result] == 'something something'
       address = create_address(row)
       address_info = search_for_property(address)
       next if address_info.nil?
-      write_to_results_file(results_file, address_info)
+      write_to_results_file(address_info)
     end
 
   end
