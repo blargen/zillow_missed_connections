@@ -7,21 +7,24 @@
         <img style="margin-bottom: 25px;" src="first.jpg" class="rounded d-block" alt="...">
       <% end %>
       <div class="card-deck">
-        <div class="card border-dark mb-3 text-center">
-
-          <div class="card-body">
-            <h6 class="card-subtitle">How does this bode for my zip code?</h6>
-            <% if @zip_formatted_correctly %>
-              <h5 class="card-header">Zip Codes</h5>
+        <% if @zip_formatted_correctly %>
+          <div class="card border-dark mb-3 text-center text-white bg-success">
+            <div class="card-body">
+              <h5 class="card-header border-white text-white bg-success">Zip Codes</h5>
+              <h6 class="card-subtitle">How does this bode for my zip code?</h6>
               <p class="card-text">Ogre Says, "Yo Bruv, it looks like you be looking for love in all the right places!
                 Dem
                 zip codes are off
                 the chain!"</p>
-            <% else %>
+        <% else %>
+          <div class="card border-dark mb-3 text-center">
+            <h5 class="card-header border-white bg-danger text-white">Zip Codes</h5>
+            <div class="card-body">
+              <h6 class="card-subtitle">How does this bode for my zip code?</h6>
               <p class="card-text">Ogre says, "Yo Bruv, your zips be straight busted! You gots to make dem look nice wif
                 dem 5 digis!"</p>
-            <% end %>
-          </div>
+        <% end %>
+        </div>
         </div>
         <div class="card border-dark mb-3 text-center">
           <h5 class="card-header">Required Headers</h5>
@@ -37,24 +40,29 @@
             </ul>
           </div>
         </div>
-        <div class="card border-dark mb-3 text-center">
-          <h5 class="card-header">Love Connection Status</h5>
-          <div class="card-body">
-            <% if @zip_formatted_correctly && @missing_headers == [] %>
+        <% if @zip_formatted_correctly && @missing_headers == [] %>
+          <div class="card border-dark mb-3 text-center">
+            <h5 class="card-header border-white bg-success text-white">Love Connection Status</h5>
+            <div class="card-body">
               <h5 class="card-title">I think we have a romantic connection!</h5>
               <p class="card-text">In your case, CSV stands for Created Sexy Values!
                 Let's see if we can't set up a date with your file and Zillow!
               </p>
-               <a class="btn btn-success" href="/down_to_zillow" role="button">Ooo La La</a>
-            <% else %>
+              <a class="btn btn-success" href="/down_to_zillow" role="button">Ooo La La!</a>
+        <% else %>
+          <div class="card mb-3 text-center border-dark">
+            <h5 class="card-header border-white bg-danger text-white">Love Connection Status</h5>
+            <div class="card-body text-failure">
               <h5 class="card-title">It looks like maybe we got off on the wrong foot.</h5>
               <p class="card-text">Not every single date leads to a connection!
                 Let's give it another shot! There's a right csv for everybody!</p>
               <a class="btn btn-danger" href="/" role="button">Let's try this again</a>
-            <% end %>
-          </div>
+        <% end %>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
