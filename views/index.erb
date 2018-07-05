@@ -1,16 +1,15 @@
 <div class="container">
   <div class="card col-sm-12 mx-auto">
-    <img src="first.jpg" class="card-img-top rounded d-block" alt="...">
+    <img src="first.jpg" class="card-img-top rounded d-block" alt="..." style="margin-top: 25px; margin_bottom: 25px;">
     <div class="card-body col-sm-12">
       <form action="/compatibility" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-          <h5 class="card-title">CSV Matchmaker</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Let's make some magic happen!</h6>
-          <div class="form-group form-group-lg">
-            <label for="inputFiles">Select a CSV file</label>
-            <input type="file" name="input_file" class="form-control-file" accept=".csv">
-            <button type="submit" class="btn btn-lrg btn-success" id="spanishFly">Check CSV File!</button>
-          </div>
+        <h5 class="card-title">CSV Matchmaker</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Let's make some magic happen!</h6>
+        <div class="form-group form-group-lg">
+          <label for="inputFiles">Select a CSV file</label>
+          <input type="file" name="input_file" class="form-control-file" accept=".csv">
+          <button type="submit" style="margin-top:5px;" class="btn btn-lrg btn-success d-block" id="spanishFly">Compatibility Check
+          </button>
         </div>
       </form>
     </div>

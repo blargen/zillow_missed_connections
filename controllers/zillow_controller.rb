@@ -14,7 +14,6 @@ class ZillowController
   def initialize
     @calls_reached = false
     @results_file = File.expand_path("../../public/files/results/#{Date.today.strftime('%Y_%m_%d')}_results.csv", __FILE__)
-    puts "HELLO: #{File.exist?(@results_file)}"
   end
 
   def open_file(file)
@@ -47,11 +46,10 @@ class ZillowController
       :zip => nil,
       :citystatezip => nil
     }.merge!(options)
-    if options[:result].nil? and $CALLS_REACHED == false
+    if options[:result].nil? and @calls_reached == false
       response = self.class.get('http://www.zillow.com/webservice/GetDeepSearchResults.htm', query: options).body
       parsed_info = parse_response(response)
       the_whole_package = options.merge(parsed_info) unless options.nil? || parsed_info.nil?
-      puts the_whole_package
       return the_whole_package
     else
       return options
@@ -70,7 +68,7 @@ class ZillowController
     else
       address_info[:result] = Nokogiri(search_results).xpath("//message").first.text
     end
-    puts address_info
+    puts "Address: #{address_info}"
     address_info
   end
 
@@ -94,12 +92,11 @@ class ZillowController
     CSV.open(@results_file, 'w+') { |csv| csv << headers }
   end
 
-
   def create_romance(file)
     original_file = open_file(file)
     create_headers
     original_file.each do |row|
-      next if row[:result] == 'something something'
+      next if row[:result] == 'Request successfully processed0'
       address = create_address(row)
       address_info = search_for_property(address)
       next if address_info.nil?
