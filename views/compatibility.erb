@@ -30,9 +30,9 @@
 
         <div class="card border-dark mb-3 text-center">
           <% if @missing_headers == [] %>
-            <h5 class="card-header border-white bg-success text-white">Love Connection Status</h5>
+            <h5 class="card-header border-white bg-success text-white">Header Status</h5>
           <% else %>
-            <h5 class="card-header border-white bg-danger text-white">Love Connection Status</h5>
+            <h5 class="card-header border-white bg-danger text-white">Header Status</h5>
           <% end %>
           <div class="card-body">
             <ul class="list-group">
@@ -54,7 +54,10 @@
               <p class="card-text">In your case, CSV stands for Created Sexy Values!
                 Let's see if we can't set up a date with your file and Zillow!
               </p>
-              <a class="btn btn-success" href="/down_to_zillow" role="button">Ooo La La!</a>
+              <form method="post" action="/dtz">
+                <input type="hidden" name="resultsFilePath" value=<% @results_file %>>
+                <button class="btn btn-success" href='/dtz' role="button" type="submit">DTZ</button>
+              </form>
             </div>
           </div>
         <% else %>
