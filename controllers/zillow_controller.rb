@@ -46,9 +46,10 @@ class ZillowController
       :zip => nil,
       :citystatezip => nil
     }.merge!(options)
-    if options[:result].nil? and @calls_reached == false
+    if options[:result].nil? && @calls_reached == false
       response = self.class.get('http://www.zillow.com/webservice/GetDeepSearchResults.htm', query: options).body
       parsed_info = parse_response(response)
+      puts parsed_info
       the_whole_package = options.merge(parsed_info) unless options.nil? || parsed_info.nil?
       return the_whole_package
     else
@@ -64,10 +65,11 @@ class ZillowController
     return if Nokogiri(search_results).xpath("//message").first.nil?
     if Nokogiri(search_results).xpath("//message").first.text =~ /maximum number of calls for today/
       @calls_reached = true
-      error_message('The number of calls to Zillow for the day has been surpassed. Please try again tomorrow.')
+      #error_message('The number of calls to Zillow for the day has been surpassed. Please try again tomorrow.')
     else
       address_info[:result] = Nokogiri(search_results).xpath("//message").first.text
     end
+    puts address_info
     address_info
   end
 
@@ -99,6 +101,7 @@ class ZillowController
       address = create_address(row)
       address_info = search_for_property(address)
       next if address_info.nil?
+      puts "Address Info: #{address_info}"
       write_to_results_file(address_info)
     end
     @results_file

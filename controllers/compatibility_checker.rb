@@ -16,7 +16,7 @@ class CompatibilityChecker
   def check_zip_code(csv_file)
     zip_column = CSV.table(csv_file)[:zip]
     zip_column.each do |cell|
-      return false unless cell.to_s.length == 5
+      return false unless cell.to_s =~ /^\d{5}$/
     end
   end
 end

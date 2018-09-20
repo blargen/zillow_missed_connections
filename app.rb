@@ -24,13 +24,17 @@ class App < Sinatra::Base
     erb :compatibility
   end
 
+  get '/dtz' do
+    erb :dtz
+  end
+
   post '/dtz' do
     file = File.expand_path('../public/files/source/source_file.csv', __FILE__)
     zillow = ZillowController.new
-    @results_file = zillow.create_romance(file)
-    file_name = File.basename(@results_file)
+    results_file = zillow.create_romance(file)
+    file_name = File.basename(results_file)
     puts "FILE: #{file_name}"
-    send_file(@results_file, )
+    send_file(results_file, filename: "#{Date.today.strftime('%Y-%m-%d')}_results.csv")
     erb :dtz
   end
 

@@ -2,5 +2,6 @@
 .idea/
 .ruby-version
 .DS_Store
+public/files/results/
 
-
+public/files/source/
